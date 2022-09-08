@@ -33,10 +33,10 @@ pipeline {
         stage('package') {
             when{
                 branch 'master'
-                changeset "**/worker/**"
+                changeset "**/result/**"
             }
             steps {
-                echo 'Packaging worker app'
+                echo 'Packaging result app'
                 dir('worker'){
                     sh 'mvn package -DskipTests'
                     archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
@@ -47,13 +47,7 @@ pipeline {
     
     post{
         always{
-            echo 'Pipeline for worker is complete..'
-        }
-        failure{
-            slackSend (channel: "instavote-cd", message: "Build Failed - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
-        }
-        success{
-            slackSend (channel: "instavote-cd", message: "Build Succeeded - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)")
+            echo 'Pipeline for result is complete..'
         }
     }
 }
