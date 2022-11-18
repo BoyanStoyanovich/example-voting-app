@@ -37,25 +37,6 @@ pipeline {
                 }
             }
         }
-        stage('package') {
-            agent {
-                docker {
-                    image 'python:2.7.16-slim'
-                    args '--user root'
-                }
-            }
-            when{
-                //branch 'master'
-                changeset "**/vote/**"
-            }
-            steps {
-                echo 'Packaging vote app'
-                dir('vote'){
-                    sh 'mvn package -DskipTests'
-                    archiveArtifacts artifacts: '**/target/*.jar', fingerprint: true
-                }
-            }
-        }
         stage('docker-package') {
             agent any
             when{
