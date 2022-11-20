@@ -10,9 +10,6 @@ pipeline {
                     args '-v $HOME/.m2:/root/.m2'
                 }
             }
-            when{
-                changeset "**/worker/**"
-            }
             steps {
                 echo 'Compiling worker app'
                 dir('worker'){
@@ -26,9 +23,6 @@ pipeline {
                     image 'maven:3.6.1-jdk-8-alpine'
                     args '-v $HOME/.m2:/root/.m2'
                 }
-            }
-            when{
-                changeset "**/worker/**"
             }
             steps {
                 echo 'Running Unit Tests on Worker App'
@@ -44,10 +38,9 @@ pipeline {
                     args '-v $HOME/.m2:/root/.m2'
                 }
             }
-            when{
+            //when{
                 //branch 'master'
-                changeset "**/worker/**"
-            }
+            //}
             steps {
                 echo 'Packaging worker app'
                 dir('worker'){
@@ -58,10 +51,9 @@ pipeline {
         }
         stage('worker-docker-package') {
             agent any
-            when{
-                changeset "**/worker/**"
+            //when{
                 //branch 'master'
-            }
+            //}
             steps {
                 echo 'Packaging worker app with docker'
                 script{
@@ -80,9 +72,6 @@ pipeline {
                     args '-v $HOME/.m2:/root/.m2'
                 }
             }
-            when{
-                changeset "**/result/**"
-            }
             steps {
                 echo 'Compiling result app'
                 dir('result'){
@@ -98,9 +87,6 @@ pipeline {
                     args '-v $HOME/.m2:/root/.m2'
                 }
             }
-            when{
-                changeset "**/result/**"
-            }
             steps {
                 echo 'Running Unit Tests on Result App'
                 dir('result'){
@@ -111,10 +97,9 @@ pipeline {
         }
         stage('result-docker-package') {
             agent any
-            when{
-                changeset "**/result/**"
+            //when{
                 //branch 'master'
-            }
+            //}
             steps {
                 echo 'Packaging result app with docker'
                 script{
@@ -133,9 +118,6 @@ pipeline {
                     args '--user root'
                 }
             }
-            when{
-                changeset "**/vote/**"
-            }
             steps {
                 echo 'Compiling vote app'
                 dir('vote'){
@@ -150,9 +132,6 @@ pipeline {
                     args '--user root'
                 }
             }
-            when{
-                changeset "**/vote/**"
-            }
             steps {
                 echo 'Running Unit Tests on vote App'
                 dir('vote'){
@@ -163,10 +142,9 @@ pipeline {
         }
         stage('vote-docker-package') {
             agent any
-            when{
-                changeset "**/vote/**"
+            //when{
                 //branch 'master'
-            }
+            //}
             steps {
                 echo 'Packaging vote app with docker'
                 script{
