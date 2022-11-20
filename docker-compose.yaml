@@ -1,0 +1,52 @@
+version: "3.7"
+
+volumes:
+  db-data:
+
+networks:
+  instavote:
+    driver: bridge
+
+services:
+  vote:
+    image: boyanstoyanovich/vote:master
+    build: ./vote
+    ports:
+      - 5010:80
+    depends_on:
+      - redis
+    networks:
+      - instavote
+        
+  redis:
+    image: redis:alpine
+    networks:
+      - instavote
+
+  db:
+    image: postgres:9.4
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    networks:
+      - instavote
+
+  result:
+    image: boyanstoyanovich/result:master
+    build: ./result
+    ports:
+      - 5011:4000
+    depends_on:
+      - db
+    networks:
+      - instavote
+
+  worker:
+    image: boyanstoyanovich/worker:master
+    build: ./worker
+    depends_on:
+      - redis
+      - db
+    networks:
+      - instavote
