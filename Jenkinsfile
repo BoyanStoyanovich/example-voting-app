@@ -185,9 +185,9 @@ pipeline {
       /*when{
         branch 'master'
       }*/
-      /*tools {
+      tools {
         jdk "JDK11" // the name you have given the JDK installation in Global Tool Configuration
-      }*/
+      }
 
       environment{
         sonarpath = tool 'SonarScanner'
