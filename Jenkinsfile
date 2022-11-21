@@ -41,7 +41,9 @@ pipeline {
           image 'maven:3.6.1-jdk-8-alpine'
           args '-v $HOME/.m2:/root/.m2'
         }
-
+      }
+      when{
+        branch 'master'
       }
       steps {
         echo 'Packaging worker app'
@@ -55,6 +57,9 @@ pipeline {
 
     stage('worker-docker-package') {
       agent any
+      when{
+        branch 'master'
+      }
       steps {
         echo 'Packaging worker app with docker'
         script {
@@ -106,6 +111,9 @@ pipeline {
 
     stage('result-docker-package') {
       agent any
+      when{
+        branch 'master'
+      }
       steps {
         echo 'Packaging result app with docker'
         script {
@@ -156,6 +164,10 @@ pipeline {
 
     stage('vote-docker-package') {
       agent any
+      when{
+        changeset "**/vote/**"
+        branch 'master'
+      }
       steps {
         echo 'Packaging vote app with docker'
         script {
